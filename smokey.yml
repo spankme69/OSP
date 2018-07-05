@@ -1,26 +1,27 @@
 ---
 
-- name: SMOKE TEST
+- name: smokey
   hosts: jumpbox
   roles:
   - osp-facts
   gather_facts: true
   become: true
 
-- name: Run smoketest
+- name: Run smokey
   hosts: frontends
   become: yes
   gather_facts: false
 
   tasks:
-  - name: Connect to frontend URI
+  - name: Connect to URI
     uri:
       url: http://{{ inventory_hostname }}
       return_content: yes
-    register: output
+    register: result
 
-  - debug: var=output
+  - debug: var=result
 
-  - name: Fail if output not correct
+  - name: test output
     fail:
-    when: "'Ansible has done its job' not in output"
+      msg: "FAILED!!"
+    when: "'Welcome to Tomcat' not in result.content"
