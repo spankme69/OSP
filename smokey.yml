@@ -19,8 +19,6 @@
       return_content: yes
     register: result
 
-  - debug: var=result
-
   - name: test output
     fail:
       msg: "FAILED!!"
